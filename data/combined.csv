@@ -90,8 +90,8 @@ Mistral Large 3,2025-12-02,0.75,85.5,43.9,92.0,,,,,,,updated_2026,Mistral,0.5,1.
 GPT-5.3 Codex,2026-01-15,6.0,,91.5,,,,,,,,updated_2026,OpenAI,3.0,15.0
 Grok 4,2026-01-20,6.0,,,,,,,,,,updated_2026,xAI,3.0,15.0
 Grok 4 Fast,2026-01-20,0.275,,,,,,,,,,updated_2026,xAI,0.2,0.5
-Claude Sonnet 4.6,2026-02-17,6.0,,74.1,,,,,,,,updated_2026,Anthropic,3.0,15.0
-Claude Opus 4.6,2026-02-17,30.0,91.1,91.3,,,1503.0,,,,,updated_2026,Anthropic,15.0,75.0
+Claude Opus 4.6,2026-02-05,10.0,91.1,91.3,,,1503.0,,,,,updated_2026,Anthropic,5.0,25.0
+Claude Sonnet 4.6,2026-02-17,6.0,89.3,74.1,,,,,,,,updated_2026,Anthropic,3.0,15.0
 Gemini 3.1 Pro,2026-02-19,4.5,92.6,94.3,,,,,,,,updated_2026,Google,2.0,12.0
-Gemini 3.1 Flash-Lite,2026-03-03,0.5625,,86.9,,,,,,,,updated_2026,Google,0.25,1.5
+Gemini 3.1 Flash-Lite,2026-03-03,0.5625,88.9,86.9,,,,,,,,updated_2026,Google,0.25,1.5
 GPT-5.4,2026-03-05,5.625,88.5,92.0,,,,,,,,updated_2026,OpenAI,2.5,15.0

@@ -111,21 +111,37 @@
       <div class="benchmark">GPQA Diamond<br><small>PhD-уровень наука</small></div>
     </div>
     <div class="summary-card">
-      <div class="rate">~1.4x</div>
+      <div class="rate">~2x</div>
       <div class="benchmark">Chatbot Arena<br><small>Общее качество</small></div>
     </div>
   </div>
 
   <div class="highlight">
-    <strong>Что это значит на практике?</strong>
+    <strong>Что это значит на практике? Путешествие во времени по ценам:</strong>
     <ul style="margin-top:8px; margin-bottom:0;">
-      <li><strong>2023:</strong> Чтобы получить ответы уровня GPT-4 на научные вопросы (GPQA ~50%), нужно было платить <strong>~$15 за миллион токенов</strong> (GPT-4 Turbo).</li>
-      <li><strong>2025:</strong> Тот же уровень качества — <strong>$0.175</strong> (Gemini 2.0 Flash) или <strong>$0.175</strong> (GPT-4.1 nano). В ~88 раз дешевле за 2 года.</li>
-      <li><strong>2026:</strong> Gemini 3.1 Flash-Lite за <strong>$0.56</strong> набирает 86.9% на GPQA Diamond, а Gemini 3.1 Pro показывает <strong>94.3%</strong> — результаты, которые в 2024 году не показывала <em>ни одна модель в мире</em> ни за какие деньги.</li>
+      <li><strong>Ноябрь 2023:</strong> GPT-4 Turbo — единственная модель, способная набрать ~50% на GPQA Diamond (вопросы PhD-уровня). Цена: <strong>$15/MLN токенов</strong>. Альтернатив нет.</li>
+      <li><strong>Март 2025:</strong> Тот же уровень качества (GPQA ~50%) доступен за <strong>$0.175</strong> — через Gemini 2.0 Flash или GPT-4.1 nano. В <strong>~88 раз дешевле</strong> за 16 месяцев. А за $15 теперь можно получить Gemini 2.5 Pro с GPQA 84% — уровень, недостижимый год назад.</li>
+      <li><strong>Март 2026:</strong> Gemini 3.1 Flash-Lite за <strong>$0.56</strong> набирает 86.9% на GPQA Diamond. Gemini 3.1 Pro за $4.50 — рекордные <strong>94.3%</strong>. Эти результаты в 2024 году не показывала <em>ни одна модель в мире ни за какие деньги</em>.</li>
     </ul>
   </div>
+
+  <div class="highlight" style="border-left-color: #0a7a8a;">
+    <strong>Гонка провайдеров в 2026 году:</strong>
+    <ul style="margin-top:8px; margin-bottom:0;">
+      <li><strong>Google (Gemini 3.1 Pro):</strong> Абсолютный лидер по научным задачам — GPQA Diamond <strong>94.3%</strong>, MMLU <strong>92.6%</strong>. Цена $2/$12 за токены. Самый высокий результат на планете по PhD-вопросам.</li>
+      <li><strong>OpenAI (GPT-5.4):</strong> Выпущен 5 марта 2026. GPQA Diamond <strong>92.0%</strong>, цена $2.50/$15. Объединяет линейки Codex и GPT. Сильная позиция по соотношению цена/качество.</li>
+      <li><strong>Anthropic (Claude Opus 4.6):</strong> №1 на Chatbot Arena — ELO <strong>1503</strong> (40 очков отрыва от ближайшего конкурента). GPQA Diamond <strong>91.3%</strong>. Anthropic снизил цену Opus с $15/$75 (Opus 4) до <strong>$5/$25</strong> (Opus 4.5 и 4.6) — в 3 раза дешевле при лучшем качестве.</li>
+      <li><strong>xAI (Grok 4 Fast):</strong> Самый дешёвый «быстрый» API на рынке — <strong>$0.20/$0.50</strong> за миллион токенов. Бюджетная альтернатива для высоконагруженных приложений.</li>
+      <li><strong>DeepSeek (V3.2):</strong> Китайский лидер бюджетного сегмента — <strong>$0.28/$0.42</strong>. Результаты уровня GPT-5 на математических олимпиадах (IMO, IOI).</li>
+    </ul>
+  </div>
+
   <div class="highlight" style="border-left-color: #e8784a;">
-    <strong>Для бизнеса:</strong> Если год назад ваш AI-продукт тратил $10 000/мес на API — сегодня ту же задачу можно решить за $1 000–2 000, переключившись на новые модели. Или получить значительно лучшее качество за те же деньги.
+    <strong>Для бизнеса — два сценария:</strong>
+    <ul style="margin-top:8px; margin-bottom:0;">
+      <li><strong>Экономия:</strong> Если год назад ваш AI-продукт тратил $10 000/мес на GPT-4 Turbo ($15/MLN) — переход на Gemini 3.1 Flash-Lite ($0.56/MLN) сократит расходы до <strong>~$370/мес</strong> при сравнимом качестве. Экономия 96%.</li>
+      <li><strong>Апгрейд качества:</strong> За те же $10 000/мес вы получаете доступ к моделям с GPQA 91–94% (было 50%), MMLU 92% (было 87%), и контекстным окном в 1 млн токенов (было 128К). Качественно другой уровень продукта.</li>
+    </ul>
   </div>
 </div>
 
@@ -254,7 +270,7 @@
 
   <div id="tab-arena" class="tab-content">
     <div class="chart-container">
-      <h3>LMSys Chatbot Arena ELO <span class="rate-badge">~1.4x/год</span></h3>
+      <h3>LMSys Chatbot Arena ELO <span class="rate-badge">~2x/год</span></h3>
       <p>Рейтинг на основе предпочтений пользователей (слепые A/B тесты). Отражает «субъективное качество» модели. Шкала ELO, не проценты.</p>
       <iframe src="output/charts/lmsys_chatbot_arena_elo.html" class="chart-frame" loading="lazy"></iframe>
     </div>
@@ -319,8 +335,8 @@
       <tr class="new-data"><td>Grok 4</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
       <tr class="new-data"><td>Grok 4 Fast</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$0.275</td><td>$0.20</td><td>$0.50</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
       <tr class="new-data"><td>GPT-5.3 Codex</td><td class="provider-cell">OpenAI</td><td>2026-01-15</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">91.5</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Sonnet 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Opus 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-17</td><td class="price-cell">$30.00</td><td>$15.00</td><td>$75.00</td><td class="score-cell">91.1</td><td class="score-cell">91.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">1503</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
+      <tr class="new-data"><td>Claude Opus 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-05</td><td class="price-cell">$10.00</td><td>$5.00</td><td>$25.00</td><td class="score-cell">91.1</td><td class="score-cell">91.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">1503</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
+      <tr class="new-data"><td>Claude Sonnet 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">89.3</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
       <tr class="new-data"><td>Gemini 3.1 Pro</td><td class="provider-cell">Google</td><td>2026-02-19</td><td class="price-cell">$4.50</td><td>$2.00</td><td>$12.00</td><td class="score-cell">92.6</td><td class="score-cell">94.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
       <tr class="new-data"><td>Gemini 3.1 Flash-Lite</td><td class="provider-cell">Google</td><td>2026-03-03</td><td class="price-cell">$0.56</td><td>$0.25</td><td>$1.50</td><td class="empty-cell">—</td><td class="score-cell">86.9</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
       <tr class="new-data"><td>GPT-5.4</td><td class="provider-cell">OpenAI</td><td>2026-03-05</td><td class="price-cell">$5.625</td><td>$2.50</td><td>$15.00</td><td class="score-cell">88.5</td><td class="score-cell">92.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
@@ -337,7 +353,7 @@
   <p>Google's новейшая модель побила все рекорды на научных задачах PhD-уровня. При цене $4.50/MLN это не самая дешёвая модель, но результат 94.3% — абсолютный максимум на март 2026.</p>
 
   <h3>Claude Opus 4.6 — №1 на Chatbot Arena (ELO 1503)</h3>
-  <p>Anthropic вернул Opus на вершину пользовательских предпочтений. GPQA Diamond 91.3%, MMLU 91.1%. Цена осталась $15/$75 — премиальный сегмент.</p>
+  <p>Anthropic вернул Opus на вершину пользовательских предпочтений. GPQA Diamond 91.3%, MMLU 91.1%. Цена $5/$25 — Anthropic снизил стоимость Opus в 3 раза по сравнению с Opus 4 ($15/$75).</p>
 
   <h3>GPT-5.4 — OpenAI вступает в гонку 2026</h3>
   <p>$2.50/$15.00 за токены, GPQA Diamond 92.0%. Выпущен 5 марта 2026. Конкурентная цена за топ-результат.</p>
@@ -362,7 +378,7 @@
     <tr><td>HumanEval</td><td>—</td><td>~3.5x/год</td></tr>
     <tr><td>MATH Level 5</td><td>—</td><td>~2.5x/год</td></tr>
     <tr><td>GPQA Diamond</td><td>~40x/год</td><td>~2x/год</td></tr>
-    <tr><td>Arena ELO</td><td>—</td><td>~1.4x/год</td></tr>
+    <tr><td>Arena ELO</td><td>—</td><td>~2x/год</td></tr>
     <tr><td>Медиана</td><td>~50x/год</td><td>~3x/год</td></tr>
   </table>
   <div class="highlight" style="margin-top:16px;">
