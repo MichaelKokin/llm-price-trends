@@ -37,7 +37,10 @@
   /* Data table */
   .table-wrapper { overflow-x: auto; margin: 16px 0; }
   table { border-collapse: collapse; width: 100%; font-size: 12px; }
-  th { background: #034752; color: white; padding: 8px 10px; text-align: left; position: sticky; top: 0; white-space: nowrap; }
+  th { background: #034752; color: white; padding: 8px 10px; text-align: left; position: sticky; top: 0; white-space: nowrap; cursor: pointer; user-select: none; }
+  th:hover { background: #0a7a8a; }
+  th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: 0.5; }
+  th.sorted .sort-arrow { opacity: 1; }
   td { padding: 6px 10px; border-bottom: 1px solid #eee; white-space: nowrap; }
   tr:hover { background: #f0f8f8; }
   tr.new-data { background: #fffbf0; }
@@ -117,7 +120,7 @@
   </div>
 
   <div class="highlight">
-    <strong>Что это значит на практике? Путешествие во времени по ценам:</strong>
+    <strong>Как менялись цены — конкретные примеры:</strong>
     <ul style="margin-top:8px; margin-bottom:0;">
       <li><strong>Ноябрь 2023:</strong> GPT-4 Turbo — единственная модель, способная набрать ~50% на GPQA Diamond (вопросы PhD-уровня). Цена: <strong>$15/MLN токенов</strong>. Альтернатив нет.</li>
       <li><strong>Март 2025:</strong> Тот же уровень качества (GPQA ~50%) доступен за <strong>$0.175</strong> — через Gemini 2.0 Flash или GPT-4.1 nano. В <strong>~88 раз дешевле</strong> за 16 месяцев. А за $15 теперь можно получить Gemini 2.5 Pro с GPQA 84% — уровень, недостижимый год назад.</li>
@@ -134,6 +137,7 @@
       <li><strong>xAI (Grok 4 Fast):</strong> Самый дешёвый «быстрый» API на рынке — <strong>$0.20/$0.50</strong> за миллион токенов. Бюджетная альтернатива для высоконагруженных приложений.</li>
       <li><strong>DeepSeek (V3.2):</strong> Китайский лидер бюджетного сегмента — <strong>$0.28/$0.42</strong>. Результаты уровня GPT-5 на математических олимпиадах (IMO, IOI).</li>
     </ul>
+    <p style="margin-top:12px; font-size:14px;"><strong>Вывод:</strong> Впервые в истории нет одного «лучшего» провайдера. Google лидирует по science-бенчмаркам, Anthropic — по пользовательским предпочтениям, OpenAI — по универсальности. А бюджетные модели от xAI, DeepSeek и Google Flash-Lite дают 80–87% GPQA Diamond за $0.20–0.56/MLN — уровень, который год назад стоил $6–15. Рынок расслоился на <em>премиум</em> (лучшее качество, $4–10/MLN) и <em>commodity</em> (достаточное качество, $0.20–0.60/MLN). Для большинства задач commodity хватает.</p>
   </div>
 
   <div class="highlight" style="border-left-color: #e8784a;">
@@ -280,24 +284,24 @@
 <!-- ===== Таблица данных ===== -->
 <div class="section">
   <h2>Полная таблица данных (96 моделей)</h2>
-  <p>Оранжевые строки — новые данные (2025–2026), собранные и верифицированные нами. Зелёные — оригинальные данные Epoch AI. Пустые ячейки = данные отсутствуют.</p>
+  <p>Оранжевые строки — новые данные (2025–2026), собранные и верифицированные нами. Пустые ячейки = данные отсутствуют. <strong>Клик по заголовку столбца</strong> — сортировка ↑↓</p>
 
   <div class="table-wrapper" style="max-height: 600px; overflow-y: auto;">
   <table>
     <thead>
       <tr>
-        <th>Модель</th>
-        <th>Провайдер</th>
-        <th>Дата</th>
-        <th>$/1M tok</th>
-        <th>Input $</th>
-        <th>Output $</th>
-        <th>MMLU</th>
-        <th>GPQA</th>
-        <th>Human<br>Eval</th>
-        <th>MATH<br>500</th>
-        <th>Arena<br>ELO</th>
-        <th>MATH<br>Lv5</th>
+        <th onclick="sortTable(0,'str')">Модель <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(1,'str')">Провайдер <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(2,'str')">Дата <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(3,'num')">$/1M tok <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(4,'num')">Input $ <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(5,'num')">Output $ <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(6,'num')">MMLU <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(7,'num')">GPQA <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(8,'num')">Human<br>Eval <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(9,'num')">MATH<br>500 <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(10,'num')">Arena<br>ELO <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(11,'num')">MATH<br>Lv5 <span class="sort-arrow">⇅</span></th>
         <th>Источник</th>
       </tr>
     </thead>
@@ -406,6 +410,52 @@ function switchTab(name) {
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   event.target.classList.add('active');
+}
+
+// Table sorting
+let sortDir = {};
+function sortTable(colIdx, type) {
+  const table = document.querySelector('.table-wrapper table');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  // Skip the "... ещё ~50 моделей" separator row
+  const dataRows = rows.filter(r => !r.querySelector('td[colspan]'));
+  const separatorRows = rows.filter(r => r.querySelector('td[colspan]'));
+
+  // Toggle direction
+  sortDir[colIdx] = sortDir[colIdx] === 'asc' ? 'desc' : 'asc';
+  const dir = sortDir[colIdx] === 'asc' ? 1 : -1;
+
+  // Update header arrows
+  table.querySelectorAll('th').forEach((th, i) => {
+    th.classList.remove('sorted');
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow) arrow.textContent = '⇅';
+  });
+  const th = table.querySelectorAll('th')[colIdx];
+  th.classList.add('sorted');
+  const arrow = th.querySelector('.sort-arrow');
+  if (arrow) arrow.textContent = dir === 1 ? '↑' : '↓';
+
+  dataRows.sort((a, b) => {
+    let aVal = a.cells[colIdx]?.textContent.trim() || '';
+    let bVal = b.cells[colIdx]?.textContent.trim() || '';
+
+    if (type === 'num') {
+      const parseNum = s => {
+        s = s.replace(/[$,]/g, '');
+        const n = parseFloat(s);
+        return isNaN(n) ? -Infinity : n;
+      };
+      return (parseNum(aVal) - parseNum(bVal)) * dir;
+    }
+    return aVal.localeCompare(bVal, 'ru') * dir;
+  });
+
+  // Re-append: separator first, then sorted rows (or just all sorted if no separator context needed)
+  tbody.innerHTML = '';
+  dataRows.forEach(r => tbody.appendChild(r));
 }
 </script>
 
