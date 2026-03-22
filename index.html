@@ -5,15 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LLM Inference Price Trends — Updated to March 2026</title>
 <style>
+  html { scroll-behavior: smooth; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #1a1a2e; line-height: 1.6; }
 
   .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-  header { background: linear-gradient(135deg, #034752, #0a7a8a); color: white; padding: 40px 0; margin-bottom: 30px; }
+  header { background: linear-gradient(135deg, #034752, #0a7a8a); color: white; padding: 40px 0; margin-bottom: 0; position: relative; }
   header .container { display: flex; flex-direction: column; gap: 12px; }
   header h1 { font-size: 28px; font-weight: 700; }
   header p { font-size: 15px; opacity: 0.9; max-width: 700px; }
+
+  .lang-switch { position: absolute; top: 16px; right: 20px; display: flex; background: rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; }
+  .lang-btn { padding: 6px 14px; border: none; background: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
+  .lang-btn.active { background: rgba(255,255,255,0.25); color: white; border-radius: 20px; }
+  .lang-btn[data-lang] { display: inline-block !important; }
+
+  .toc-nav { background: white; border-bottom: 1px solid #e0e8ec; padding: 10px 0; position: sticky; top: 0; z-index: 100; }
+  .toc-nav .container { display: flex; gap: 8px; overflow-x: auto; }
+  .toc-chip { padding: 6px 14px; background: #f0f4f8; border-radius: 16px; font-size: 12px; color: #034752; text-decoration: none; white-space: nowrap; border: 1px solid #e0e8ec; transition: all 0.2s; }
+  .toc-chip:hover { background: #034752; color: white; }
+
+  [data-lang] { display: none !important; }
+  html[lang="ru"] [data-lang="ru"] { display: inline !important; }
+  html[lang="en"] [data-lang="en"] { display: inline !important; }
+  html[lang="ru"] div[data-lang="ru"],
+  html[lang="en"] div[data-lang="en"],
+  html[lang="ru"] li[data-lang="ru"],
+  html[lang="en"] li[data-lang="en"],
+  html[lang="ru"] p[data-lang="ru"],
+  html[lang="en"] p[data-lang="en"],
+  html[lang="ru"] ul[data-lang="ru"],
+  html[lang="en"] ul[data-lang="en"],
+  html[lang="ru"] h2[data-lang="ru"],
+  html[lang="en"] h2[data-lang="en"],
+  html[lang="ru"] h3[data-lang="ru"],
+  html[lang="en"] h3[data-lang="en"] { display: block !important; }
 
   .section { background: white; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
   .section h2 { font-size: 20px; color: #034752; margin-bottom: 16px; border-bottom: 2px solid #e8f4f8; padding-bottom: 8px; }
@@ -72,150 +99,167 @@
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
 
   footer { text-align: center; padding: 30px; font-size: 12px; color: #999; }
+  footer a { color: #0a7a8a; }
   a { color: #0a7a8a; }
 </style>
 </head>
 <body>
 
 <header>
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+    <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+  </div>
   <div class="container">
-    <h1>Как быстро дешевеют LLM?</h1>
-    <p>Исследование динамики цен на доступ к большим языковым моделям через API: от GPT-3 в 2021 году до Gemini 3.1 Pro, Claude 4.6 и GPT-5.4 в 2026-м. 96 моделей, 6 бенчмарков, 4+ года данных.</p>
-    <p style="font-size:12px; opacity:0.7; margin-top:8px;">* На основе открытых данных <a href="https://epoch.ai/data-insights/llm-inference-price-trends" style="color:#a0d8e8;">Epoch AI</a> (2021–2025) с дополнением по новым моделям до 20 марта 2026 года</p>
+    <h1><span data-lang="ru">Как быстро дешевеют LLM?</span><span data-lang="en">How Fast Are LLM Prices Dropping?</span></h1>
+    <p><span data-lang="ru">Исследование динамики цен на доступ к большим языковым моделям через API: от GPT-3 в 2021 году до Gemini 3.1 Pro, Claude 4.6 и GPT-5.4 в 2026-м. 96 моделей, 6 бенчмарков, 4+ года данных.</span><span data-lang="en">A study of LLM API pricing dynamics: from GPT-3 in 2021 to Gemini 3.1 Pro, Claude 4.6, and GPT-5.4 in 2026. 96 models, 6 benchmarks, 4+ years of data.</span></p>
+    <p style="font-size:12px; opacity:0.7; margin-top:8px;"><span data-lang="ru">* На основе открытых данных <a href="https://epoch.ai/data-insights/llm-inference-price-trends" style="color:#a0d8e8;">Epoch AI</a> (2021–2025) с дополнением по новым моделям до 20 марта 2026 года</span><span data-lang="en">* Based on open data from <a href="https://epoch.ai/data-insights/llm-inference-price-trends" style="color:#a0d8e8;">Epoch AI</a> (2021–2025), extended with new models up to March 20, 2026</span></p>
   </div>
 </header>
 
-<div class="container">
+<nav class="toc-nav">
+  <div class="container">
+    <a href="#findings" class="toc-chip"><span data-lang="ru">Главный вывод</span><span data-lang="en">Key Findings</span></a>
+    <a href="#sources" class="toc-chip"><span data-lang="ru">Источники</span><span data-lang="en">Data Sources</span></a>
+    <a href="#methodology" class="toc-chip"><span data-lang="ru">Методология</span><span data-lang="en">Methodology</span></a>
+    <a href="#charts" class="toc-chip"><span data-lang="ru">Графики</span><span data-lang="en">Charts</span></a>
+    <a href="#data-table" class="toc-chip"><span data-lang="ru">Таблица данных</span><span data-lang="en">Data Table</span></a>
+    <a href="#insights" class="toc-chip"><span data-lang="ru">Наблюдения</span><span data-lang="en">Insights</span></a>
+    <a href="#vs-epoch" class="toc-chip"><span data-lang="ru">Сравнение с Epoch</span><span data-lang="en">vs Epoch AI</span></a>
+  </div>
+</nav>
+
+<div class="container" style="margin-top: 30px;">
 
 <!-- ===== TL;DR ===== -->
-<div class="section">
-  <h2>Главный вывод</h2>
-  <p>Стоимость использования LLM через API <strong>падает экспоненциально</strong>. За тот же уровень качества ответов вы платите в среднем <strong>в 3 раза меньше каждый год</strong>. По некоторым задачам (математика) — в 10 раз меньше.</p>
+<div class="section" id="findings">
+  <h2><span data-lang="ru">Главный вывод</span><span data-lang="en">Key Findings</span></h2>
+  <p><span data-lang="ru">Стоимость использования LLM через API <strong>падает экспоненциально</strong>. За тот же уровень качества ответов вы платите в среднем <strong>в 3 раза меньше каждый год</strong>. По некоторым задачам (математика) — в 10 раз меньше.</span><span data-lang="en">The cost of using LLMs via API is <strong>dropping exponentially</strong>. For the same quality level, you pay on average <strong>3x less every year</strong>. For some tasks (math) — 10x less.</span></p>
 
   <div class="summary-grid">
     <div class="summary-card">
       <div class="rate">~10x</div>
-      <div class="benchmark">MATH-500<br><small>Математика</small></div>
+      <div class="benchmark">MATH-500<br><small><span data-lang="ru">Математика</span><span data-lang="en">Math</span></small></div>
     </div>
     <div class="summary-card">
       <div class="rate">~4x</div>
-      <div class="benchmark">MMLU<br><small>Общие знания</small></div>
+      <div class="benchmark">MMLU<br><small><span data-lang="ru">Общие знания</span><span data-lang="en">General Knowledge</span></small></div>
     </div>
     <div class="summary-card">
       <div class="rate">~4x</div>
-      <div class="benchmark">HumanEval<br><small>Код</small></div>
+      <div class="benchmark">HumanEval<br><small><span data-lang="ru">Код</span><span data-lang="en">Code</span></small></div>
     </div>
     <div class="summary-card">
       <div class="rate">~3x</div>
-      <div class="benchmark">MATH Level 5<br><small>Сложная математика</small></div>
+      <div class="benchmark">MATH Level 5<br><small><span data-lang="ru">Сложная математика</span><span data-lang="en">Advanced Math</span></small></div>
     </div>
     <div class="summary-card">
       <div class="rate">~2x</div>
-      <div class="benchmark">GPQA Diamond<br><small>PhD-уровень наука</small></div>
+      <div class="benchmark">GPQA Diamond<br><small><span data-lang="ru">PhD-уровень наука</span><span data-lang="en">PhD-level Science</span></small></div>
     </div>
     <div class="summary-card">
       <div class="rate">~2x</div>
-      <div class="benchmark">Chatbot Arena<br><small>Общее качество</small></div>
+      <div class="benchmark">Chatbot Arena<br><small><span data-lang="ru">Общее качество</span><span data-lang="en">Overall Quality</span></small></div>
     </div>
   </div>
 
   <div class="highlight">
-    <strong>Как менялись цены — конкретные примеры:</strong>
+    <strong><span data-lang="ru">Как менялись цены — конкретные примеры:</span><span data-lang="en">How prices changed — specific examples:</span></strong>
     <ul style="margin-top:8px; margin-bottom:0;">
-      <li><strong>Ноябрь 2023:</strong> GPT-4 Turbo — единственная модель, способная набрать ~50% на GPQA Diamond (вопросы PhD-уровня). Цена: <strong>$15/MLN токенов</strong>. Альтернатив нет.</li>
-      <li><strong>Март 2025:</strong> Тот же уровень качества (GPQA ~50%) доступен за <strong>$0.175</strong> — через Gemini 2.0 Flash или GPT-4.1 nano. В <strong>~88 раз дешевле</strong> за 16 месяцев. А за $15 теперь можно получить Gemini 2.5 Pro с GPQA 84% — уровень, недостижимый год назад.</li>
-      <li><strong>Март 2026:</strong> Gemini 3.1 Flash-Lite за <strong>$0.56</strong> набирает 86.9% на GPQA Diamond. Gemini 3.1 Pro за $4.50 — рекордные <strong>94.3%</strong>. Эти результаты в 2024 году не показывала <em>ни одна модель в мире ни за какие деньги</em>.</li>
+      <li><span data-lang="ru"><strong>Ноябрь 2023:</strong> GPT-4 Turbo — единственная модель, способная набрать ~50% на GPQA Diamond (вопросы PhD-уровня). Цена: <strong>$15/MLN токенов</strong>. Альтернатив нет.</span><span data-lang="en"><strong>November 2023:</strong> GPT-4 Turbo — the only model capable of scoring ~50% on GPQA Diamond (PhD-level questions). Price: <strong>$15/M tokens</strong>. No alternatives.</span></li>
+      <li><span data-lang="ru"><strong>Март 2025:</strong> Тот же уровень качества (GPQA ~50%) доступен за <strong>$0.175</strong> — через Gemini 2.0 Flash или GPT-4.1 nano. В <strong>~88 раз дешевле</strong> за 16 месяцев. А за $15 теперь можно получить Gemini 2.5 Pro с GPQA 84% — уровень, недостижимый год назад.</span><span data-lang="en"><strong>March 2025:</strong> The same quality level (GPQA ~50%) is available for <strong>$0.175</strong> — via Gemini 2.0 Flash or GPT-4.1 nano. <strong>~88x cheaper</strong> in 16 months. And for $15 you can now get Gemini 2.5 Pro with GPQA 84% — a level unachievable a year ago.</span></li>
+      <li><span data-lang="ru"><strong>Март 2026:</strong> Gemini 3.1 Flash-Lite за <strong>$0.56</strong> набирает 86.9% на GPQA Diamond. Gemini 3.1 Pro за $4.50 — рекордные <strong>94.3%</strong>. Эти результаты в 2024 году не показывала <em>ни одна модель в мире ни за какие деньги</em>.</span><span data-lang="en"><strong>March 2026:</strong> Gemini 3.1 Flash-Lite at <strong>$0.56</strong> scores 86.9% on GPQA Diamond. Gemini 3.1 Pro at $4.50 — a record <strong>94.3%</strong>. These results were unachievable in 2024 by <em>any model at any price</em>.</span></li>
     </ul>
   </div>
 
   <div class="highlight" style="border-left-color: #0a7a8a;">
-    <strong>Гонка провайдеров в 2026 году:</strong>
+    <strong><span data-lang="ru">Гонка провайдеров в 2026 году:</span><span data-lang="en">The provider race in 2026:</span></strong>
     <ul style="margin-top:8px; margin-bottom:0;">
-      <li><strong>Google (Gemini 3.1 Pro):</strong> Абсолютный лидер по научным задачам — GPQA Diamond <strong>94.3%</strong>, MMLU <strong>92.6%</strong>. Цена $2/$12 за токены. Самый высокий результат на планете по PhD-вопросам.</li>
-      <li><strong>OpenAI (GPT-5.4):</strong> Выпущен 5 марта 2026. GPQA Diamond <strong>92.0%</strong>, цена $2.50/$15. Объединяет линейки Codex и GPT. Сильная позиция по соотношению цена/качество.</li>
-      <li><strong>Anthropic (Claude Opus 4.6):</strong> №1 на Chatbot Arena — ELO <strong>1503</strong> (40 очков отрыва от ближайшего конкурента). GPQA Diamond <strong>91.3%</strong>. Anthropic снизил цену Opus с $15/$75 (Opus 4) до <strong>$5/$25</strong> (Opus 4.5 и 4.6) — в 3 раза дешевле при лучшем качестве.</li>
-      <li><strong>xAI (Grok 4 Fast):</strong> Самый дешёвый «быстрый» API на рынке — <strong>$0.20/$0.50</strong> за миллион токенов. Бюджетная альтернатива для высоконагруженных приложений.</li>
-      <li><strong>DeepSeek (V3.2):</strong> Китайский лидер бюджетного сегмента — <strong>$0.28/$0.42</strong>. Результаты уровня GPT-5 на математических олимпиадах (IMO, IOI).</li>
+      <li><span data-lang="ru"><strong>Google (Gemini 3.1 Pro):</strong> Абсолютный лидер по научным задачам — GPQA Diamond <strong>94.3%</strong>, MMLU <strong>92.6%</strong>. Цена $2/$12 за токены. Самый высокий результат на планете по PhD-вопросам.</span><span data-lang="en"><strong>Google (Gemini 3.1 Pro):</strong> The absolute leader in science tasks — GPQA Diamond <strong>94.3%</strong>, MMLU <strong>92.6%</strong>. Price $2/$12 per tokens. The highest PhD-question score on the planet.</span></li>
+      <li><span data-lang="ru"><strong>OpenAI (GPT-5.4):</strong> Выпущен 5 марта 2026. GPQA Diamond <strong>92.0%</strong>, цена $2.50/$15. Объединяет линейки Codex и GPT. Сильная позиция по соотношению цена/качество.</span><span data-lang="en"><strong>OpenAI (GPT-5.4):</strong> Released March 5, 2026. GPQA Diamond <strong>92.0%</strong>, price $2.50/$15. Merges the Codex and GPT lines. Strong price/quality ratio.</span></li>
+      <li><span data-lang="ru"><strong>Anthropic (Claude Opus 4.6):</strong> №1 на Chatbot Arena — ELO <strong>1503</strong> (40 очков отрыва от ближайшего конкурента). GPQA Diamond <strong>91.3%</strong>. Anthropic снизил цену Opus с $15/$75 (Opus 4) до <strong>$5/$25</strong> (Opus 4.5 и 4.6) — в 3 раза дешевле при лучшем качестве.</span><span data-lang="en"><strong>Anthropic (Claude Opus 4.6):</strong> #1 on Chatbot Arena — ELO <strong>1503</strong> (40 points ahead of the nearest competitor). GPQA Diamond <strong>91.3%</strong>. Anthropic cut the Opus price from $15/$75 (Opus 4) to <strong>$5/$25</strong> (Opus 4.5 and 4.6) — 3x cheaper with better quality.</span></li>
+      <li><span data-lang="ru"><strong>xAI (Grok 4 Fast):</strong> Самый дешёвый «быстрый» API на рынке — <strong>$0.20/$0.50</strong> за миллион токенов. Бюджетная альтернатива для высоконагруженных приложений.</span><span data-lang="en"><strong>xAI (Grok 4 Fast):</strong> The cheapest "fast" API on the market — <strong>$0.20/$0.50</strong> per million tokens. A budget alternative for high-load applications.</span></li>
+      <li><span data-lang="ru"><strong>DeepSeek (V3.2):</strong> Китайский лидер бюджетного сегмента — <strong>$0.28/$0.42</strong>. Результаты уровня GPT-5 на математических олимпиадах (IMO, IOI).</span><span data-lang="en"><strong>DeepSeek (V3.2):</strong> The Chinese leader of the budget segment — <strong>$0.28/$0.42</strong>. GPT-5-level results on math olympiads (IMO, IOI).</span></li>
     </ul>
-    <p style="margin-top:12px; font-size:14px;"><strong>Вывод:</strong> Впервые в истории нет одного «лучшего» провайдера. Google лидирует по science-бенчмаркам, Anthropic — по пользовательским предпочтениям, OpenAI — по универсальности. А бюджетные модели от xAI, DeepSeek и Google Flash-Lite дают 80–87% GPQA Diamond за $0.20–0.56/MLN — уровень, который год назад стоил $6–15. Рынок расслоился на <em>премиум</em> (лучшее качество, $4–10/MLN) и <em>commodity</em> (достаточное качество, $0.20–0.60/MLN). Для большинства задач commodity хватает.</p>
+    <p style="margin-top:12px; font-size:14px;"><span data-lang="ru"><strong>Вывод:</strong> Впервые в истории нет одного «лучшего» провайдера. Google лидирует по science-бенчмаркам, Anthropic — по пользовательским предпочтениям, OpenAI — по универсальности. А бюджетные модели от xAI, DeepSeek и Google Flash-Lite дают 80–87% GPQA Diamond за $0.20–0.56/MLN — уровень, который год назад стоил $6–15. Рынок расслоился на <em>премиум</em> (лучшее качество, $4–10/MLN) и <em>commodity</em> (достаточное качество, $0.20–0.60/MLN). Для большинства задач commodity хватает.</span><span data-lang="en"><strong>Conclusion:</strong> For the first time ever, there is no single "best" provider. Google leads in science benchmarks, Anthropic — in user preferences, OpenAI — in versatility. Budget models from xAI, DeepSeek, and Google Flash-Lite deliver 80–87% GPQA Diamond for $0.20–0.56/M — a level that cost $6–15 a year ago. The market has split into <em>premium</em> (best quality, $4–10/M) and <em>commodity</em> (good enough, $0.20–0.60/M). For most tasks, commodity is sufficient.</span></p>
   </div>
 
   <div class="highlight" style="border-left-color: #e8784a;">
-    <strong>Для бизнеса — два сценария:</strong>
+    <strong><span data-lang="ru">Для бизнеса — два сценария:</span><span data-lang="en">For business — two scenarios:</span></strong>
     <ul style="margin-top:8px; margin-bottom:0;">
-      <li><strong>Экономия:</strong> Если год назад ваш AI-продукт тратил $10 000/мес на GPT-4 Turbo ($15/MLN) — переход на Gemini 3.1 Flash-Lite ($0.56/MLN) сократит расходы до <strong>~$370/мес</strong> при сравнимом качестве. Экономия 96%.</li>
-      <li><strong>Апгрейд качества:</strong> За те же $10 000/мес вы получаете доступ к моделям с GPQA 91–94% (было 50%), MMLU 92% (было 87%), и контекстным окном в 1 млн токенов (было 128К). Качественно другой уровень продукта.</li>
+      <li><span data-lang="ru"><strong>Экономия:</strong> Если год назад ваш AI-продукт тратил $10 000/мес на GPT-4 Turbo ($15/MLN) — переход на Gemini 3.1 Flash-Lite ($0.56/MLN) сократит расходы до <strong>~$370/мес</strong> при сравнимом качестве. Экономия 96%.</span><span data-lang="en"><strong>Cost savings:</strong> If your AI product was spending $10,000/mo on GPT-4 Turbo ($15/M) a year ago — switching to Gemini 3.1 Flash-Lite ($0.56/M) cuts costs to <strong>~$370/mo</strong> at comparable quality. 96% savings.</span></li>
+      <li><span data-lang="ru"><strong>Апгрейд качества:</strong> За те же $10 000/мес вы получаете доступ к моделям с GPQA 91–94% (было 50%), MMLU 92% (было 87%), и контекстным окном в 1 млн токенов (было 128К). Качественно другой уровень продукта.</span><span data-lang="en"><strong>Quality upgrade:</strong> For the same $10,000/mo you get access to models with GPQA 91–94% (was 50%), MMLU 92% (was 87%), and a 1M token context window (was 128K). A fundamentally different product level.</span></li>
     </ul>
   </div>
 </div>
 
 <!-- ===== Источники данных ===== -->
-<div class="section">
-  <h2>Источники данных</h2>
+<div class="section" id="sources">
+  <h2><span data-lang="ru">Источники данных</span><span data-lang="en">Data Sources</span></h2>
 
-  <h3>Откуда цены?</h3>
-  <p>Цена = средневзвешенная стоимость input и output токенов по формуле: <code>(3 × input + 1 × output) / 4</code>. Веса 3:1 отражают типичное соотношение: промпт обычно длиннее ответа.</p>
+  <h3><span data-lang="ru">Откуда цены?</span><span data-lang="en">Where do prices come from?</span></h3>
+  <p><span data-lang="ru">Цена = средневзвешенная стоимость input и output токенов по формуле: <code>(3 × input + 1 × output) / 4</code>. Веса 3:1 отражают типичное соотношение: промпт обычно длиннее ответа.</span><span data-lang="en">Price = weighted average cost of input and output tokens: <code>(3 × input + 1 × output) / 4</code>. The 3:1 weights reflect a typical ratio: prompts are usually longer than responses.</span></p>
   <ul>
-    <li><strong>Epoch AI / Artificial Analysis</strong> — основной источник для 66 исторических моделей (2021–2025). <a href="https://github.com/epoch-research/llm-benchmark-efficiency">GitHub</a></li>
-    <li><strong>Официальные страницы провайдеров</strong> — Anthropic, OpenAI, Google, Meta, DeepSeek, xAI, Mistral</li>
-    <li><strong><a href="https://artificialanalysis.ai">ArtificialAnalysis.ai</a></strong> — перекрёстная верификация цен</li>
+    <li><span data-lang="ru"><strong>Epoch AI / Artificial Analysis</strong> — основной источник для 66 исторических моделей (2021–2025). <a href="https://github.com/epoch-research/llm-benchmark-efficiency">GitHub</a></span><span data-lang="en"><strong>Epoch AI / Artificial Analysis</strong> — primary source for 66 historical models (2021–2025). <a href="https://github.com/epoch-research/llm-benchmark-efficiency">GitHub</a></span></li>
+    <li><span data-lang="ru"><strong>Официальные страницы провайдеров</strong> — Anthropic, OpenAI, Google, Meta, DeepSeek, xAI, Mistral</span><span data-lang="en"><strong>Official provider pages</strong> — Anthropic, OpenAI, Google, Meta, DeepSeek, xAI, Mistral</span></li>
+    <li><span data-lang="ru"><strong><a href="https://artificialanalysis.ai">ArtificialAnalysis.ai</a></strong> — перекрёстная верификация цен</span><span data-lang="en"><strong><a href="https://artificialanalysis.ai">ArtificialAnalysis.ai</a></strong> — cross-verification of prices</span></li>
   </ul>
 
-  <h3>Откуда бенчмарки?</h3>
+  <h3><span data-lang="ru">Откуда бенчмарки?</span><span data-lang="en">Where do benchmarks come from?</span></h3>
   <ul>
-    <li><strong>MMLU</strong> — 57 предметов, от истории до физики. «Общие знания» модели. Максимум 100%.</li>
-    <li><strong>GPQA Diamond</strong> — вопросы уровня PhD по физике, химии, биологии. Даже эксперты набирают ~65%. Максимум 100%.</li>
-    <li><strong>HumanEval</strong> — 164 задачи на программирование (Python). Модель пишет код, тесты проверяют. Максимум 100%.</li>
-    <li><strong>MATH-500</strong> — 500 задач по математике (алгебра, геометрия, теория чисел). Максимум 100%.</li>
-    <li><strong>MATH Level 5</strong> — самые сложные задачи из MATH (олимпиадный уровень). Максимум 100%.</li>
-    <li><strong>LMSys Chatbot Arena ELO</strong> — рейтинг на основе слепых сравнений пользователями. Шкала ELO (~1000–1400).</li>
+    <li><span data-lang="ru"><strong>MMLU</strong> — 57 предметов, от истории до физики. «Общие знания» модели. Максимум 100%.</span><span data-lang="en"><strong>MMLU</strong> — 57 subjects, from history to physics. A model's "general knowledge." Maximum 100%.</span></li>
+    <li><span data-lang="ru"><strong>GPQA Diamond</strong> — вопросы уровня PhD по физике, химии, биологии. Даже эксперты набирают ~65%. Максимум 100%.</span><span data-lang="en"><strong>GPQA Diamond</strong> — PhD-level questions in physics, chemistry, biology. Even experts score ~65%. Maximum 100%.</span></li>
+    <li><span data-lang="ru"><strong>HumanEval</strong> — 164 задачи на программирование (Python). Модель пишет код, тесты проверяют. Максимум 100%.</span><span data-lang="en"><strong>HumanEval</strong> — 164 coding tasks (Python). The model writes code, tests verify it. Maximum 100%.</span></li>
+    <li><span data-lang="ru"><strong>MATH-500</strong> — 500 задач по математике (алгебра, геометрия, теория чисел). Максимум 100%.</span><span data-lang="en"><strong>MATH-500</strong> — 500 math problems (algebra, geometry, number theory). Maximum 100%.</span></li>
+    <li><span data-lang="ru"><strong>MATH Level 5</strong> — самые сложные задачи из MATH (олимпиадный уровень). Максимум 100%.</span><span data-lang="en"><strong>MATH Level 5</strong> — the hardest problems from MATH (olympiad level). Maximum 100%.</span></li>
+    <li><span data-lang="ru"><strong>LMSys Chatbot Arena ELO</strong> — рейтинг на основе слепых сравнений пользователями. Шкала ELO (~1000–1400).</span><span data-lang="en"><strong>LMSys Chatbot Arena ELO</strong> — ranking based on blind user comparisons. ELO scale (~1000–1400).</span></li>
   </ul>
-  <p>Источники скоров: официальные технические отчёты моделей, <a href="https://github.com/openai/simple-evals">OpenAI simple-evals</a>, Papers with Code, Epoch AI.</p>
+  <p><span data-lang="ru">Источники скоров: официальные технические отчёты моделей, <a href="https://github.com/openai/simple-evals">OpenAI simple-evals</a>, Papers with Code, Epoch AI.</span><span data-lang="en">Score sources: official model technical reports, <a href="https://github.com/openai/simple-evals">OpenAI simple-evals</a>, Papers with Code, Epoch AI.</span></p>
 
-  <h3>Что исключено?</h3>
+  <h3><span data-lang="ru">Что исключено?</span><span data-lang="en">What is excluded?</span></h3>
   <div class="highlight">
-    <strong>Reasoning-модели</strong> (o1, o3, o4-mini, DeepSeek-R1) исключены из регрессии. Причина: они генерируют скрытые «цепочки рассуждений» — тысячи токенов, которые пользователь не видит, но оплачивает. Сравнение их $/токен с обычными моделями некорректно.
+    <span data-lang="ru"><strong>Reasoning-модели</strong> (o1, o3, o4-mini, DeepSeek-R1) исключены из регрессии. Причина: они генерируют скрытые «цепочки рассуждений» — тысячи токенов, которые пользователь не видит, но оплачивает. Сравнение их $/токен с обычными моделями некорректно.</span><span data-lang="en"><strong>Reasoning models</strong> (o1, o3, o4-mini, DeepSeek-R1) are excluded from regression. Reason: they generate hidden "chains of thought" — thousands of tokens the user doesn't see but pays for. Comparing their $/token with regular models is incorrect.</span>
   </div>
 </div>
 
 <!-- ===== Методология ===== -->
-<div class="section">
-  <h2>Методология (как строятся графики)</h2>
-  <p>Следуем подходу <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a>:</p>
+<div class="section" id="methodology">
+  <h2><span data-lang="ru">Методология (как строятся графики)</span><span data-lang="en">Methodology (how charts are built)</span></h2>
+  <p><span data-lang="ru">Следуем подходу <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a>:</span><span data-lang="en">Following the <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a> approach:</span></p>
 
   <div class="methodology-step">
     <div class="step-num">1</div>
-    <div class="step-text">Для каждого бенчмарка определяем «пороги качества» — это скор каждой модели, которая устанавливала новый рекорд производительности.</div>
+    <div class="step-text"><span data-lang="ru">Для каждого бенчмарка определяем «пороги качества» — это скор каждой модели, которая устанавливала новый рекорд производительности.</span><span data-lang="en">For each benchmark, we define "quality thresholds" — the score of each model that set a new performance record.</span></div>
   </div>
   <div class="methodology-step">
     <div class="step-num">2</div>
-    <div class="step-text">Для каждого порога отслеживаем <strong>самую дешёвую модель</strong>, достигающую этого уровня, по мере выхода новых моделей.</div>
+    <div class="step-text"><span data-lang="ru">Для каждого порога отслеживаем <strong>самую дешёвую модель</strong>, достигающую этого уровня, по мере выхода новых моделей.</span><span data-lang="en">For each threshold, we track the <strong>cheapest model</strong> reaching that level as new models are released.</span></div>
   </div>
   <div class="methodology-step">
     <div class="step-num">3</div>
-    <div class="step-text">Получаем набор точек (дата, цена) — «за сколько можно было купить данный уровень качества в каждый момент времени».</div>
+    <div class="step-text"><span data-lang="ru">Получаем набор точек (дата, цена) — «за сколько можно было купить данный уровень качества в каждый момент времени».</span><span data-lang="en">We get a set of data points (date, price) — "how much a given quality level cost at each point in time."</span></div>
   </div>
   <div class="methodology-step">
     <div class="step-num">4</div>
-    <div class="step-text">Строим <strong>лог-линейную регрессию</strong>: log₁₀(цена) = slope × год + intercept. Наклон (slope) определяет скорость удешевления.</div>
+    <div class="step-text"><span data-lang="ru">Строим <strong>лог-линейную регрессию</strong>: log₁₀(цена) = slope × год + intercept. Наклон (slope) определяет скорость удешевления.</span><span data-lang="en">We fit a <strong>log-linear regression</strong>: log₁₀(price) = slope × year + intercept. The slope determines the rate of price decline.</span></div>
   </div>
 
-  <p style="margin-top:16px;">Отрицательный наклон = цены падают. Значение 10<sup>|slope|</sup> — во сколько раз дешевле каждый год.</p>
+  <p style="margin-top:16px;"><span data-lang="ru">Отрицательный наклон = цены падают. Значение 10<sup>|slope|</sup> — во сколько раз дешевле каждый год.</span><span data-lang="en">A negative slope = prices are falling. The value 10<sup>|slope|</sup> = how many times cheaper each year.</span></p>
 </div>
 
 <!-- ===== Графики ===== -->
-<div class="section">
-  <h2>Графики</h2>
-  <p>Каждый график показывает цену (ось Y, логарифмическая шкала) vs дату выхода модели (ось X). Пунктирная линия — тренд (регрессия). Наведите мышь на точки для деталей.</p>
+<div class="section" id="charts">
+  <h2><span data-lang="ru">Графики</span><span data-lang="en">Charts</span></h2>
+  <p><span data-lang="ru">Каждый график показывает цену (ось Y, логарифмическая шкала) vs дату выхода модели (ось X). Пунктирная линия — тренд (регрессия). Наведите мышь на точки для деталей.</span><span data-lang="en">Each chart shows price (Y-axis, log scale) vs model release date (X-axis). The dashed line is the trend (regression). Hover over data points for details.</span></p>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#0a7a8a;"></div> Данные Epoch AI (2021–2025)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e8784a;"></div> Обновлённые данные (2025–2026)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#c24b6d; width:20px; height:3px; border-radius:0;"></div> Линия тренда</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0a7a8a;"></div> <span data-lang="ru">Данные Epoch AI (2021–2025)</span><span data-lang="en">Epoch AI data (2021–2025)</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8784a;"></div> <span data-lang="ru">Обновлённые данные (2025–2026)</span><span data-lang="en">Updated data (2025–2026)</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c24b6d; width:20px; height:3px; border-radius:0;"></div> <span data-lang="ru">Линия тренда</span><span data-lang="en">Trend line</span></div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('combined')">Все тренды</button>
+    <button class="tab active" onclick="switchTab('combined')"><span data-lang="ru">Все тренды</span><span data-lang="en">All Trends</span></button>
     <button class="tab" onclick="switchTab('gpqa')">GPQA Diamond</button>
     <button class="tab" onclick="switchTab('mmlu')">MMLU</button>
     <button class="tab" onclick="switchTab('math500')">MATH-500</button>
@@ -226,73 +270,73 @@
 
   <div id="tab-combined" class="tab-content active">
     <div class="chart-container">
-      <h3>Все бенчмарки — линии регрессии <span class="rate-badge">Медиана: ~5x/год</span></h3>
-      <p>Каждая линия — тренд для одного бенчмарка. Чем круче наклон — тем быстрее падают цены для этого типа задач.</p>
+      <h3><span data-lang="ru">Все бенчмарки — линии регрессии</span><span data-lang="en">All benchmarks — regression lines</span> <span class="rate-badge"><span data-lang="ru">Медиана: ~5x/год</span><span data-lang="en">Median: ~5x/year</span></span></h3>
+      <p><span data-lang="ru">Каждая линия — тренд для одного бенчмарка. Чем круче наклон — тем быстрее падают цены для этого типа задач.</span><span data-lang="en">Each line is a trend for one benchmark. The steeper the slope, the faster prices drop for that task type.</span></p>
       <iframe src="output/charts/combined_all_benchmarks.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-gpqa" class="tab-content">
     <div class="chart-container">
-      <h3>GPQA Diamond (PhD-level Science) <span class="rate-badge">~2x/год</span></h3>
-      <p>В 2023 году для PhD-уровня нужен был GPT-4 Turbo за $15/MLN. В 2026 — Gemini 3.1 Flash-Lite за $0.56 с результатом 86.9%, а Gemini 3.1 Pro набирает 94.3%.</p>
+      <h3>GPQA Diamond (PhD-level Science) <span class="rate-badge"><span data-lang="ru">~2x/год</span><span data-lang="en">~2x/year</span></span></h3>
+      <p><span data-lang="ru">В 2023 году для PhD-уровня нужен был GPT-4 Turbo за $15/MLN. В 2026 — Gemini 3.1 Flash-Lite за $0.56 с результатом 86.9%, а Gemini 3.1 Pro набирает 94.3%.</span><span data-lang="en">In 2023, PhD-level required GPT-4 Turbo at $15/M. In 2026 — Gemini 3.1 Flash-Lite at $0.56 scoring 86.9%, and Gemini 3.1 Pro achieves 94.3%.</span></p>
       <iframe src="output/charts/gpqa_diamond.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-mmlu" class="tab-content">
     <div class="chart-container">
-      <h3>MMLU (General Knowledge) <span class="rate-badge">~4x/год</span></h3>
-      <p>Самый «зрелый» бенчмарк — модели давно научились его решать. GPT-3 набирал 44% за $60, сейчас Phi 4 набирает 85% за $0.12.</p>
+      <h3>MMLU (General Knowledge) <span class="rate-badge"><span data-lang="ru">~4x/год</span><span data-lang="en">~4x/year</span></span></h3>
+      <p><span data-lang="ru">Самый «зрелый» бенчмарк — модели давно научились его решать. GPT-3 набирал 44% за $60, сейчас Phi 4 набирает 85% за $0.12.</span><span data-lang="en">The most "mature" benchmark — models learned to solve it long ago. GPT-3 scored 44% for $60, now Phi 4 scores 85% for $0.12.</span></p>
       <iframe src="output/charts/mmlu.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-math500" class="tab-content">
     <div class="chart-container">
-      <h3>MATH-500 <span class="rate-badge">~10x/год</span></h3>
-      <p>Математические задачи. Резкий прогресс: GPT-3.5 решал 44% задач, новые модели — 89%+, при этом в десятки раз дешевле.</p>
+      <h3>MATH-500 <span class="rate-badge"><span data-lang="ru">~10x/год</span><span data-lang="en">~10x/year</span></span></h3>
+      <p><span data-lang="ru">Математические задачи. Резкий прогресс: GPT-3.5 решал 44% задач, новые модели — 89%+, при этом в десятки раз дешевле.</span><span data-lang="en">Math problems. Sharp progress: GPT-3.5 solved 44% of tasks, new models — 89%+, while being tens of times cheaper.</span></p>
       <iframe src="output/charts/math_500.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-humaneval" class="tab-content">
     <div class="chart-container">
-      <h3>HumanEval (Coding) <span class="rate-badge">~3.5x/год</span></h3>
-      <p>Задачи на написание кода. Бенчмарк сильно «насыщен» — топовые модели уже решают 90%+, поэтому дифференциация по цене менее выражена.</p>
+      <h3>HumanEval (Coding) <span class="rate-badge"><span data-lang="ru">~3.5x/год</span><span data-lang="en">~3.5x/year</span></span></h3>
+      <p><span data-lang="ru">Задачи на написание кода. Бенчмарк сильно «насыщен» — топовые модели уже решают 90%+, поэтому дифференциация по цене менее выражена.</span><span data-lang="en">Coding tasks. The benchmark is heavily "saturated" — top models already solve 90%+, so price differentiation is less pronounced.</span></p>
       <iframe src="output/charts/humaneval.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-math5" class="tab-content">
     <div class="chart-container">
-      <h3>MATH Level 5 (Advanced Math) <span class="rate-badge">~3x/год</span></h3>
-      <p>Олимпиадная математика. Самый медленный тренд — только дорогие модели достигают высоких результатов, дешёвые пока отстают.</p>
+      <h3>MATH Level 5 (Advanced Math) <span class="rate-badge"><span data-lang="ru">~3x/год</span><span data-lang="en">~3x/year</span></span></h3>
+      <p><span data-lang="ru">Олимпиадная математика. Самый медленный тренд — только дорогие модели достигают высоких результатов, дешёвые пока отстают.</span><span data-lang="en">Olympiad math. The slowest trend — only expensive models achieve high results, cheap ones lag behind.</span></p>
       <iframe src="output/charts/math_5.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 
   <div id="tab-arena" class="tab-content">
     <div class="chart-container">
-      <h3>LMSys Chatbot Arena ELO <span class="rate-badge">~2x/год</span></h3>
-      <p>Рейтинг на основе предпочтений пользователей (слепые A/B тесты). Отражает «субъективное качество» модели. Шкала ELO, не проценты.</p>
+      <h3>LMSys Chatbot Arena ELO <span class="rate-badge"><span data-lang="ru">~2x/год</span><span data-lang="en">~2x/year</span></span></h3>
+      <p><span data-lang="ru">Рейтинг на основе предпочтений пользователей (слепые A/B тесты). Отражает «субъективное качество» модели. Шкала ELO, не проценты.</span><span data-lang="en">Ranking based on user preferences (blind A/B tests). Reflects the "subjective quality" of a model. ELO scale, not percentages.</span></p>
       <iframe src="output/charts/lmsys_chatbot_arena_elo.html" class="chart-frame" loading="lazy"></iframe>
     </div>
   </div>
 </div>
 
 <!-- ===== Таблица данных ===== -->
-<div class="section">
-  <h2>Полная таблица данных (96 моделей)</h2>
-  <p>Оранжевые строки — новые данные (2025–2026), собранные и верифицированные нами. Пустые ячейки = данные отсутствуют. <strong>Клик по заголовку столбца</strong> — сортировка ↑↓</p>
+<div class="section" id="data-table">
+  <h2><span data-lang="ru">Полная таблица данных (96 моделей)</span><span data-lang="en">Full Data Table (96 models)</span></h2>
+  <p><span data-lang="ru">Оранжевые строки — новые данные (2025–2026), собранные и верифицированные нами. Пустые ячейки = данные отсутствуют. <strong>Клик по заголовку столбца</strong> — сортировка ↑↓</span><span data-lang="en">Orange rows — new data (2025–2026), collected and verified by us. Empty cells = data unavailable. <strong>Click a column header</strong> to sort ↑↓</span></p>
 
   <div class="table-wrapper" style="max-height: 600px; overflow-y: auto;">
   <table>
     <thead>
       <tr>
-        <th onclick="sortTable(0,'str')">Модель <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortTable(1,'str')">Провайдер <span class="sort-arrow">⇅</span></th>
-        <th onclick="sortTable(2,'str')">Дата <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(0,'str')"><span data-lang="ru">Модель</span><span data-lang="en">Model</span> <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(1,'str')"><span data-lang="ru">Провайдер</span><span data-lang="en">Provider</span> <span class="sort-arrow">⇅</span></th>
+        <th onclick="sortTable(2,'str')"><span data-lang="ru">Дата</span><span data-lang="en">Date</span> <span class="sort-arrow">⇅</span></th>
         <th onclick="sortTable(3,'num')">$/1M tok <span class="sort-arrow">⇅</span></th>
         <th onclick="sortTable(4,'num')">Input $ <span class="sort-arrow">⇅</span></th>
         <th onclick="sortTable(5,'num')">Output $ <span class="sort-arrow">⇅</span></th>
@@ -302,7 +346,7 @@
         <th onclick="sortTable(9,'num')">MATH<br>500 <span class="sort-arrow">⇅</span></th>
         <th onclick="sortTable(10,'num')">Arena<br>ELO <span class="sort-arrow">⇅</span></th>
         <th onclick="sortTable(11,'num')">MATH<br>Lv5 <span class="sort-arrow">⇅</span></th>
-        <th>Источник</th>
+        <th><span data-lang="ru">Источник</span><span data-lang="en">Source</span></th>
       </tr>
     </thead>
     <tbody>
@@ -317,81 +361,81 @@
       <tr><td>Llama 2 Chat 7B</td><td class="provider-cell">Meta</td><td>2023-07-18</td><td class="price-cell">$0.33</td><td>—</td><td>—</td><td class="score-cell">13.0</td><td class="score-cell">6.0</td><td class="score-cell">13.0</td><td class="empty-cell">—</td><td class="score-cell">1037</td><td class="empty-cell">—</td><td><span class="source-badge source-epoch">Epoch</span></td></tr>
       <tr><td>GPT-4 Turbo</td><td class="provider-cell">OpenAI</td><td>2023-11-06</td><td class="price-cell">$15.00</td><td>—</td><td>—</td><td class="score-cell">87.0</td><td class="score-cell">50.0</td><td class="score-cell">92.0</td><td class="score-cell">74.0</td><td class="score-cell">1256</td><td class="score-cell">36.0</td><td><span class="source-badge source-epoch">Epoch</span></td></tr>
       <tr><td>GPT-3.5-Turbo (Nov '23)</td><td class="provider-cell">OpenAI</td><td>2023-11-06</td><td class="price-cell">$0.75</td><td>—</td><td>—</td><td class="score-cell">68.0</td><td class="score-cell">30.0</td><td class="score-cell">71.0</td><td class="score-cell">44.0</td><td class="score-cell">1107</td><td class="score-cell">15.0</td><td><span class="source-badge source-epoch">Epoch</span></td></tr>
-      <tr><td colspan="13" style="background:#e8f4f8; font-weight:600; font-size:12px; text-align:center;">... ещё ~50 моделей Epoch AI (2023-12 — 2025-01) — Claude 3/3.5, Gemini 1.5, GPT-4o, Llama 3.x, Mistral, Phi 4, DeepSeek-V3 ...</td></tr>
-      <tr class="new-data"><td>Gemini 2.0 Flash</td><td class="provider-cell">Google</td><td>2025-02-05</td><td class="price-cell">$0.175</td><td>$0.10</td><td>$0.40</td><td class="score-cell">76.4</td><td class="score-cell">62.1</td><td class="score-cell">51.8</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Grok 3</td><td class="provider-cell">xAI</td><td>2025-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">92.7</td><td class="score-cell">84.6</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude 3.7 Sonnet</td><td class="provider-cell">Anthropic</td><td>2025-02-24</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">68.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">82.2</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-4.5</td><td class="provider-cell">OpenAI</td><td>2025-02-27</td><td class="price-cell">$93.75</td><td>$75.00</td><td>$150.00</td><td class="score-cell">90.8</td><td class="score-cell">69.5</td><td class="score-cell">87.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">88.6</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>DeepSeek-V3-0324</td><td class="provider-cell">DeepSeek</td><td>2025-03-24</td><td class="price-cell">$0.48</td><td>$0.27</td><td>$1.10</td><td class="score-cell">88.5</td><td class="score-cell">68.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">90.2</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Gemini 2.5 Pro</td><td class="provider-cell">Google</td><td>2025-03-25</td><td class="price-cell">$3.44</td><td>$1.25</td><td>$10.00</td><td class="score-cell">89.8</td><td class="score-cell">84.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Llama 4 Scout</td><td class="provider-cell">Meta</td><td>2025-04-05</td><td class="price-cell">$0.21</td><td>$0.15</td><td>$0.40</td><td class="score-cell">79.6</td><td class="score-cell">65.1</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">50.3</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Llama 4 Maverick</td><td class="provider-cell">Meta</td><td>2025-04-05</td><td class="price-cell">$0.42</td><td>$0.27</td><td>$0.85</td><td class="score-cell">85.5</td><td class="score-cell">82.2</td><td class="score-cell">82.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">61.2</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-4.1</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$3.50</td><td>$2.00</td><td>$8.00</td><td class="score-cell">90.2</td><td class="score-cell">66.3</td><td class="score-cell">82.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">94.5</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-4.1 mini</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$0.70</td><td>$0.40</td><td>$1.60</td><td class="score-cell">87.5</td><td class="score-cell">65.0</td><td class="score-cell">81.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">93.8</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-4.1 nano</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$0.175</td><td>$0.10</td><td>$0.40</td><td class="score-cell">80.1</td><td class="score-cell">50.3</td><td class="score-cell">62.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">87.0</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Gemini 2.5 Flash</td><td class="provider-cell">Google</td><td>2025-05-20</td><td class="price-cell">$0.85</td><td>$0.30</td><td>$2.50</td><td class="score-cell">88.4</td><td class="score-cell">82.8</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Sonnet 4</td><td class="provider-cell">Anthropic</td><td>2025-05-22</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">86.5</td><td class="score-cell">75.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Opus 4</td><td class="provider-cell">Anthropic</td><td>2025-05-22</td><td class="price-cell">$30.00</td><td>$15.00</td><td>$75.00</td><td class="score-cell">88.8</td><td class="score-cell">79.6</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude 4.5 Sonnet</td><td class="provider-cell">Anthropic</td><td>2025-09-29</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">83.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">97.7</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>DeepSeek-V3.2</td><td class="provider-cell">DeepSeek</td><td>2025-10-01</td><td class="price-cell">$0.315</td><td>$0.28</td><td>$0.42</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Opus 4.5</td><td class="provider-cell">Anthropic</td><td>2025-11-01</td><td class="price-cell">$10.00</td><td>$5.00</td><td>$25.00</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Mistral Large 3</td><td class="provider-cell">Mistral</td><td>2025-12-02</td><td class="price-cell">$0.75</td><td>$0.50</td><td>$1.50</td><td class="score-cell">85.5</td><td class="score-cell">43.9</td><td class="score-cell">92.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Grok 4</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Grok 4 Fast</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$0.275</td><td>$0.20</td><td>$0.50</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-5.3 Codex</td><td class="provider-cell">OpenAI</td><td>2026-01-15</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">91.5</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Opus 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-05</td><td class="price-cell">$10.00</td><td>$5.00</td><td>$25.00</td><td class="score-cell">91.1</td><td class="score-cell">91.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">1503</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Claude Sonnet 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">89.3</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Gemini 3.1 Pro</td><td class="provider-cell">Google</td><td>2026-02-19</td><td class="price-cell">$4.50</td><td>$2.00</td><td>$12.00</td><td class="score-cell">92.6</td><td class="score-cell">94.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>Gemini 3.1 Flash-Lite</td><td class="provider-cell">Google</td><td>2026-03-03</td><td class="price-cell">$0.56</td><td>$0.25</td><td>$1.50</td><td class="empty-cell">—</td><td class="score-cell">86.9</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
-      <tr class="new-data"><td>GPT-5.4</td><td class="provider-cell">OpenAI</td><td>2026-03-05</td><td class="price-cell">$5.625</td><td>$2.50</td><td>$15.00</td><td class="score-cell">88.5</td><td class="score-cell">92.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new">Новые</span></td></tr>
+      <tr><td colspan="13" style="background:#e8f4f8; font-weight:600; font-size:12px; text-align:center;"><span data-lang="ru">... ещё ~50 моделей Epoch AI (2023-12 — 2025-01) — Claude 3/3.5, Gemini 1.5, GPT-4o, Llama 3.x, Mistral, Phi 4, DeepSeek-V3 ...</span><span data-lang="en">... ~50 more Epoch AI models (2023-12 — 2025-01) — Claude 3/3.5, Gemini 1.5, GPT-4o, Llama 3.x, Mistral, Phi 4, DeepSeek-V3 ...</span></td></tr>
+      <tr class="new-data"><td>Gemini 2.0 Flash</td><td class="provider-cell">Google</td><td>2025-02-05</td><td class="price-cell">$0.175</td><td>$0.10</td><td>$0.40</td><td class="score-cell">76.4</td><td class="score-cell">62.1</td><td class="score-cell">51.8</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Grok 3</td><td class="provider-cell">xAI</td><td>2025-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">92.7</td><td class="score-cell">84.6</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude 3.7 Sonnet</td><td class="provider-cell">Anthropic</td><td>2025-02-24</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">68.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">82.2</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-4.5</td><td class="provider-cell">OpenAI</td><td>2025-02-27</td><td class="price-cell">$93.75</td><td>$75.00</td><td>$150.00</td><td class="score-cell">90.8</td><td class="score-cell">69.5</td><td class="score-cell">87.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">88.6</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>DeepSeek-V3-0324</td><td class="provider-cell">DeepSeek</td><td>2025-03-24</td><td class="price-cell">$0.48</td><td>$0.27</td><td>$1.10</td><td class="score-cell">88.5</td><td class="score-cell">68.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">90.2</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Gemini 2.5 Pro</td><td class="provider-cell">Google</td><td>2025-03-25</td><td class="price-cell">$3.44</td><td>$1.25</td><td>$10.00</td><td class="score-cell">89.8</td><td class="score-cell">84.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Llama 4 Scout</td><td class="provider-cell">Meta</td><td>2025-04-05</td><td class="price-cell">$0.21</td><td>$0.15</td><td>$0.40</td><td class="score-cell">79.6</td><td class="score-cell">65.1</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">50.3</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Llama 4 Maverick</td><td class="provider-cell">Meta</td><td>2025-04-05</td><td class="price-cell">$0.42</td><td>$0.27</td><td>$0.85</td><td class="score-cell">85.5</td><td class="score-cell">82.2</td><td class="score-cell">82.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">61.2</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-4.1</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$3.50</td><td>$2.00</td><td>$8.00</td><td class="score-cell">90.2</td><td class="score-cell">66.3</td><td class="score-cell">82.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">94.5</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-4.1 mini</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$0.70</td><td>$0.40</td><td>$1.60</td><td class="score-cell">87.5</td><td class="score-cell">65.0</td><td class="score-cell">81.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">93.8</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-4.1 nano</td><td class="provider-cell">OpenAI</td><td>2025-04-14</td><td class="price-cell">$0.175</td><td>$0.10</td><td>$0.40</td><td class="score-cell">80.1</td><td class="score-cell">50.3</td><td class="score-cell">62.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">87.0</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Gemini 2.5 Flash</td><td class="provider-cell">Google</td><td>2025-05-20</td><td class="price-cell">$0.85</td><td>$0.30</td><td>$2.50</td><td class="score-cell">88.4</td><td class="score-cell">82.8</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude Sonnet 4</td><td class="provider-cell">Anthropic</td><td>2025-05-22</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">86.5</td><td class="score-cell">75.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude Opus 4</td><td class="provider-cell">Anthropic</td><td>2025-05-22</td><td class="price-cell">$30.00</td><td>$15.00</td><td>$75.00</td><td class="score-cell">88.8</td><td class="score-cell">79.6</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude 4.5 Sonnet</td><td class="provider-cell">Anthropic</td><td>2025-09-29</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">83.4</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">97.7</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>DeepSeek-V3.2</td><td class="provider-cell">DeepSeek</td><td>2025-10-01</td><td class="price-cell">$0.315</td><td>$0.28</td><td>$0.42</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude Opus 4.5</td><td class="provider-cell">Anthropic</td><td>2025-11-01</td><td class="price-cell">$10.00</td><td>$5.00</td><td>$25.00</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Mistral Large 3</td><td class="provider-cell">Mistral</td><td>2025-12-02</td><td class="price-cell">$0.75</td><td>$0.50</td><td>$1.50</td><td class="score-cell">85.5</td><td class="score-cell">43.9</td><td class="score-cell">92.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Grok 4</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Grok 4 Fast</td><td class="provider-cell">xAI</td><td>2026-01-20</td><td class="price-cell">$0.275</td><td>$0.20</td><td>$0.50</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-5.3 Codex</td><td class="provider-cell">OpenAI</td><td>2026-01-15</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="empty-cell">—</td><td class="score-cell">91.5</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude Opus 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-05</td><td class="price-cell">$10.00</td><td>$5.00</td><td>$25.00</td><td class="score-cell">91.1</td><td class="score-cell">91.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="score-cell">1503</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Claude Sonnet 4.6</td><td class="provider-cell">Anthropic</td><td>2026-02-17</td><td class="price-cell">$6.00</td><td>$3.00</td><td>$15.00</td><td class="score-cell">89.3</td><td class="score-cell">74.1</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Gemini 3.1 Pro</td><td class="provider-cell">Google</td><td>2026-02-19</td><td class="price-cell">$4.50</td><td>$2.00</td><td>$12.00</td><td class="score-cell">92.6</td><td class="score-cell">94.3</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>Gemini 3.1 Flash-Lite</td><td class="provider-cell">Google</td><td>2026-03-03</td><td class="price-cell">$0.56</td><td>$0.25</td><td>$1.50</td><td class="empty-cell">—</td><td class="score-cell">86.9</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
+      <tr class="new-data"><td>GPT-5.4</td><td class="provider-cell">OpenAI</td><td>2026-03-05</td><td class="price-cell">$5.625</td><td>$2.50</td><td>$15.00</td><td class="score-cell">88.5</td><td class="score-cell">92.0</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td class="empty-cell">—</td><td><span class="source-badge source-new"><span data-lang="ru">Новые</span><span data-lang="en">New</span></span></td></tr>
     </tbody>
   </table>
   </div>
 </div>
 
 <!-- ===== Интересные наблюдения ===== -->
-<div class="section">
-  <h2>Интересные наблюдения</h2>
+<div class="section" id="insights">
+  <h2><span data-lang="ru">Интересные наблюдения</span><span data-lang="en">Notable Insights</span></h2>
 
-  <h3>Gemini 3.1 Pro — лидер GPQA Diamond (94.3%)</h3>
-  <p>Google's новейшая модель побила все рекорды на научных задачах PhD-уровня. При цене $4.50/MLN это не самая дешёвая модель, но результат 94.3% — абсолютный максимум на март 2026.</p>
+  <h3><span data-lang="ru">Gemini 3.1 Pro — лидер GPQA Diamond (94.3%)</span><span data-lang="en">Gemini 3.1 Pro — GPQA Diamond leader (94.3%)</span></h3>
+  <p><span data-lang="ru">Google's новейшая модель побила все рекорды на научных задачах PhD-уровня. При цене $4.50/MLN это не самая дешёвая модель, но результат 94.3% — абсолютный максимум на март 2026.</span><span data-lang="en">Google's newest model broke all records on PhD-level science tasks. At $4.50/M it's not the cheapest model, but the 94.3% result is the absolute maximum as of March 2026.</span></p>
 
-  <h3>Claude Opus 4.6 — №1 на Chatbot Arena (ELO 1503)</h3>
-  <p>Anthropic вернул Opus на вершину пользовательских предпочтений. GPQA Diamond 91.3%, MMLU 91.1%. Цена $5/$25 — Anthropic снизил стоимость Opus в 3 раза по сравнению с Opus 4 ($15/$75).</p>
+  <h3><span data-lang="ru">Claude Opus 4.6 — №1 на Chatbot Arena (ELO 1503)</span><span data-lang="en">Claude Opus 4.6 — #1 on Chatbot Arena (ELO 1503)</span></h3>
+  <p><span data-lang="ru">Anthropic вернул Opus на вершину пользовательских предпочтений. GPQA Diamond 91.3%, MMLU 91.1%. Цена $5/$25 — Anthropic снизил стоимость Opus в 3 раза по сравнению с Opus 4 ($15/$75).</span><span data-lang="en">Anthropic brought Opus back to the top of user preferences. GPQA Diamond 91.3%, MMLU 91.1%. Price $5/$25 — Anthropic cut Opus pricing by 3x compared to Opus 4 ($15/$75).</span></p>
 
-  <h3>GPT-5.4 — OpenAI вступает в гонку 2026</h3>
-  <p>$2.50/$15.00 за токены, GPQA Diamond 92.0%. Выпущен 5 марта 2026. Конкурентная цена за топ-результат.</p>
+  <h3><span data-lang="ru">GPT-5.4 — OpenAI вступает в гонку 2026</span><span data-lang="en">GPT-5.4 — OpenAI enters the 2026 race</span></h3>
+  <p><span data-lang="ru">$2.50/$15.00 за токены, GPQA Diamond 92.0%. Выпущен 5 марта 2026. Конкурентная цена за топ-результат.</span><span data-lang="en">$2.50/$15.00 per tokens, GPQA Diamond 92.0%. Released March 5, 2026. Competitive price for a top-tier result.</span></p>
 
-  <h3>Gemini 3.1 Flash-Lite — бюджетный лидер 2026</h3>
-  <p>$0.56/MLN при GPQA Diamond 86.9% — это уровень, который в начале 2025 не показывала ни одна модель, а сейчас доступен в бюджетном сегменте.</p>
+  <h3><span data-lang="ru">Gemini 3.1 Flash-Lite — бюджетный лидер 2026</span><span data-lang="en">Gemini 3.1 Flash-Lite — budget leader of 2026</span></h3>
+  <p><span data-lang="ru">$0.56/MLN при GPQA Diamond 86.9% — это уровень, который в начале 2025 не показывала ни одна модель, а сейчас доступен в бюджетном сегменте.</span><span data-lang="en">$0.56/M with GPQA Diamond 86.9% — a level no model could achieve in early 2025, now available in the budget segment.</span></p>
 
-  <h3>Grok 4 Fast — рекордно дешёвый API</h3>
-  <p>$0.20/$0.50 за миллион токенов — xAI предлагает самую дешёвую «быструю» модель на рынке.</p>
+  <h3><span data-lang="ru">Grok 4 Fast — рекордно дешёвый API</span><span data-lang="en">Grok 4 Fast — record-cheap API</span></h3>
+  <p><span data-lang="ru">$0.20/$0.50 за миллион токенов — xAI предлагает самую дешёвую «быструю» модель на рынке.</span><span data-lang="en">$0.20/$0.50 per million tokens — xAI offers the cheapest "fast" model on the market.</span></p>
 
-  <h3>Пробелы в данных</h3>
-  <p>Главная проблема — отсутствие MATH-500 и Arena ELO для многих новых моделей 2025–2026. Это занижает тренды для этих бенчмарков.</p>
+  <h3><span data-lang="ru">Пробелы в данных</span><span data-lang="en">Data Gaps</span></h3>
+  <p><span data-lang="ru">Главная проблема — отсутствие MATH-500 и Arena ELO для многих новых моделей 2025–2026. Это занижает тренды для этих бенчмарков.</span><span data-lang="en">The main issue — missing MATH-500 and Arena ELO scores for many new 2025–2026 models. This underestimates the trends for these benchmarks.</span></p>
 </div>
 
 <!-- ===== Сравнение с Epoch ===== -->
-<div class="section">
-  <h2>Сравнение с Epoch AI</h2>
+<div class="section" id="vs-epoch">
+  <h2><span data-lang="ru">Сравнение с Epoch AI</span><span data-lang="en">Comparison with Epoch AI</span></h2>
   <table style="font-size:13px;">
-    <tr><th>Бенчмарк</th><th>Epoch AI (до Feb 2025)</th><th>Наш анализ (до Mar 2026)</th></tr>
-    <tr><td>MATH-500</td><td>—</td><td>~10x/год</td></tr>
-    <tr><td>MMLU</td><td>~9x/год</td><td>~4x/год</td></tr>
-    <tr><td>HumanEval</td><td>—</td><td>~3.5x/год</td></tr>
-    <tr><td>MATH Level 5</td><td>—</td><td>~2.5x/год</td></tr>
-    <tr><td>GPQA Diamond</td><td>~40x/год</td><td>~2x/год</td></tr>
-    <tr><td>Arena ELO</td><td>—</td><td>~2x/год</td></tr>
-    <tr><td>Медиана</td><td>~50x/год</td><td>~3x/год</td></tr>
+    <tr><th><span data-lang="ru">Бенчмарк</span><span data-lang="en">Benchmark</span></th><th><span data-lang="ru">Epoch AI (до Feb 2025)</span><span data-lang="en">Epoch AI (to Feb 2025)</span></th><th><span data-lang="ru">Наш анализ (до Mar 2026)</span><span data-lang="en">Our analysis (to Mar 2026)</span></th></tr>
+    <tr><td>MATH-500</td><td>—</td><td><span data-lang="ru">~10x/год</span><span data-lang="en">~10x/year</span></td></tr>
+    <tr><td>MMLU</td><td><span data-lang="ru">~9x/год</span><span data-lang="en">~9x/year</span></td><td><span data-lang="ru">~4x/год</span><span data-lang="en">~4x/year</span></td></tr>
+    <tr><td>HumanEval</td><td>—</td><td><span data-lang="ru">~3.5x/год</span><span data-lang="en">~3.5x/year</span></td></tr>
+    <tr><td>MATH Level 5</td><td>—</td><td><span data-lang="ru">~2.5x/год</span><span data-lang="en">~2.5x/year</span></td></tr>
+    <tr><td>GPQA Diamond</td><td><span data-lang="ru">~40x/год</span><span data-lang="en">~40x/year</span></td><td><span data-lang="ru">~2x/год</span><span data-lang="en">~2x/year</span></td></tr>
+    <tr><td>Arena ELO</td><td>—</td><td><span data-lang="ru">~2x/год</span><span data-lang="en">~2x/year</span></td></tr>
+    <tr><td><span data-lang="ru">Медиана</span><span data-lang="en">Median</span></td><td><span data-lang="ru">~50x/год</span><span data-lang="en">~50x/year</span></td><td><span data-lang="ru">~3x/год</span><span data-lang="en">~3x/year</span></td></tr>
   </table>
   <div class="highlight" style="margin-top:16px;">
-    <strong>Почему наши числа ниже?</strong>
+    <strong><span data-lang="ru">Почему наши числа ниже?</span><span data-lang="en">Why are our numbers lower?</span></strong>
     <ul style="margin-top:8px;">
-      <li>У Epoch больше исторических точек и более полные бенчмарки для каждой модели</li>
-      <li>Epoch считает ускоренный тренд post-Jan 2024 отдельно (медиана 200x)</li>
-      <li>Многие новые дешёвые модели (2025–2026) не имеют публичных скоров по всем бенчмаркам</li>
-      <li>Тренд направления совпадает — цены падают экспоненциально</li>
+      <li><span data-lang="ru">У Epoch больше исторических точек и более полные бенчмарки для каждой модели</span><span data-lang="en">Epoch has more historical data points and more complete benchmarks for each model</span></li>
+      <li><span data-lang="ru">Epoch считает ускоренный тренд post-Jan 2024 отдельно (медиана 200x)</span><span data-lang="en">Epoch calculates the accelerated post-Jan 2024 trend separately (median 200x)</span></li>
+      <li><span data-lang="ru">Многие новые дешёвые модели (2025–2026) не имеют публичных скоров по всем бенчмаркам</span><span data-lang="en">Many new cheap models (2025–2026) lack public scores across all benchmarks</span></li>
+      <li><span data-lang="ru">Тренд направления совпадает — цены падают экспоненциально</span><span data-lang="en">The directional trend matches — prices are dropping exponentially</span></li>
     </ul>
   </div>
 </div>
@@ -399,9 +443,14 @@
 </div>
 
 <footer>
-  Исторические данные (2021–2025): <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a> &amp; <a href="https://artificialanalysis.ai">Artificial Analysis</a><br>
+  <span data-lang="ru">Исторические данные (2021–2025): <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a> &amp; <a href="https://artificialanalysis.ai">Artificial Analysis</a><br>
   Обновление (2025–2026): собственный сбор и верификация по официальным источникам провайдеров · Актуально на 20 марта 2026<br>
-  <a href="https://github.com/MichaelKokin/llm-price-trends">GitHub: MichaelKokin/llm-price-trends</a> · Данные и код открыты
+  <a href="https://github.com/MichaelKokin/llm-price-trends">GitHub: MichaelKokin/llm-price-trends</a> · Данные и код открыты<br><br>
+  Сделано в <a href="https://aigency.michaelkokin.com">AIgency</a> Миши Кокина · <a href="https://linkedin.com/in/michaelkokin">LinkedIn</a> · <a href="https://t.me/aigencyworks">Telegram</a></span>
+  <span data-lang="en">Historical data (2021–2025): <a href="https://epoch.ai/data-insights/llm-inference-price-trends">Epoch AI</a> &amp; <a href="https://artificialanalysis.ai">Artificial Analysis</a><br>
+  Update (2025–2026): our own collection and verification from official provider sources · Current as of March 20, 2026<br>
+  <a href="https://github.com/MichaelKokin/llm-price-trends">GitHub: MichaelKokin/llm-price-trends</a> · Data and code are open<br><br>
+  Made by <a href="https://aigency.michaelkokin.com">AIgency</a> by Michael Kokin · <a href="https://linkedin.com/in/michaelkokin">LinkedIn</a> · <a href="https://t.me/aigencyworks">Telegram</a></span>
 </footer>
 
 <script>
@@ -409,8 +458,22 @@ function switchTab(name) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+  event.target.closest('.tab').classList.add('active');
 }
+
+// Language switcher
+function switchLang(lang) {
+  document.documentElement.lang = lang;
+  localStorage.setItem('llm-lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+}
+// Init on load
+(function() {
+  const lang = localStorage.getItem('llm-lang') || 'ru';
+  switchLang(lang);
+})();
 
 // Table sorting
 let sortDir = {};
@@ -450,7 +513,7 @@ function sortTable(colIdx, type) {
       };
       return (parseNum(aVal) - parseNum(bVal)) * dir;
     }
-    return aVal.localeCompare(bVal, 'ru') * dir;
+    return aVal.localeCompare(bVal, document.documentElement.lang) * dir;
   });
 
   // Re-append: separator first, then sorted rows (or just all sorted if no separator context needed)
